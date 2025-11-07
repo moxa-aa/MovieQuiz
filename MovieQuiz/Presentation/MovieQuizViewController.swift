@@ -10,12 +10,8 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex] // 1
         let givenAnswer = true // 2
         
+        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        //        if questions[currentQuestionIndex].correctAnswer == true {
-        //            showAnswerResult(isCorrect: true)
-        //        } else {
-        //            showAnswerResult(isCorrect: false)
-        //        }
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -24,12 +20,6 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false // 2
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-        //        if questions[currentQuestionIndex].correctAnswer == false {
-        //            showAnswerResult(isCorrect: false)
-        //        } else {
-        //            showAnswerResult(isCorrect: true)
-        //        }
         
     }
     
@@ -43,6 +33,7 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.cornerRadius = 20
         //        yesButton.layer.cornerRadius = 15
         //        yesButton.clipsToBounds = true
         //        noButton.layer.cornerRadius = 15
@@ -148,14 +139,24 @@ final class MovieQuizViewController: UIViewController {
         }
         // красит рамку
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
-        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.YpGreen.cgColor : UIColor.ypRed.cgColor
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        
         
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             // код, который мы хотим вызвать через 1 секунду
+            
+            self.imageView.layer.borderWidth = 0
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+            
             self.showNextQuestionOrResults()
+            
         }
         
     }
@@ -183,9 +184,11 @@ final class MovieQuizViewController: UIViewController {
     
     private func show(quiz result: QuizResultsViewModel){
         // создаём объекты всплывающего окна
-        let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
-                                      message: result.text, // текст во всплывающем окне
-                                      preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
+        let alert = UIAlertController(
+            title: result.title, // заголовок всплывающего окна
+            message: result.text, // текст во всплывающем окне
+            preferredStyle: .alert
+        ) // preferredStyle может быть .alert или .actionSheet
         
         // создаём для алерта кнопку с действием
         // в замыкании пишем, что должно происходить при нажатии на кнопку
