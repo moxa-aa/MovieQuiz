@@ -66,22 +66,35 @@ final class MovieQuizUiTests: XCTestCase {
     }
     
     func testAlertAppearance() {
-
+        sleep(5)
         // Эмулируем действие, которое вызывает алерт
         for _ in 1...10  {
             app.buttons["Yes"].tap()
-            sleep(1)
+            sleep(2)
         }
 
 
-        let alert = app.alerts["Игра завершилась"]
-        XCTAssertTrue(alert.waitForExistence(timeout: 3))
+        let alert = app.alerts["Этот раунд окончен!"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
 
         // Проверяем заголовок
-        XCTAssertEqual(alert.label, "Игра завершилась")
+        XCTAssertEqual(alert.label, "Этот раунд окончен!")
 
         // Проверяем кнопки
-        XCTAssertTrue(alert.buttons["Начать заново"].exists)
+        XCTAssertTrue(alert.buttons["Сыграть ещё раз"].exists)
     }
     
+    func testAlertDisappeared() {
+        sleep(5)
+        // Эмулируем действие, которое вызывает алерт
+        for _ in 1...10  {
+            app.buttons["Yes"].tap()
+            sleep(2)
+        }
+        let alert = app.alerts["Этот раунд окончен!"]
+        alert.buttons["Сыграть ещё раз"].tap()
+        sleep(2)
+        XCTAssertFalse(alert.exists)
+        
+    }
 }
