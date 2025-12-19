@@ -92,6 +92,9 @@ final class MovieQuizUiTests: XCTestCase {
             sleep(2)
         }
         let alert = app.alerts["Этот раунд окончен!"]
+        
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "Алерт так и не появился")
+        
         alert.buttons["Сыграть ещё раз"].tap()
         sleep(2)
         XCTAssertFalse(alert.exists)
